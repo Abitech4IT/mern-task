@@ -3,21 +3,16 @@ import { useAppDispatch, useAppSelector } from "../hooks";
 import SingleTask from "./SingleTask";
 import { fetchTasks } from "../features/tasks/taskSlice";
 import { Task } from "../types";
+import { toggleTaskAsync } from "../features/tasks/taskSlice";
 
 interface TaskListProps {
   tasks: Task[];
   onDeleteTask: (id: string) => void;
-  onToggleTask: (id: string) => void;
   sortBy: string;
   setSortBy: (sortBy: "pending" | "completed") => void;
 }
 
-function TaskList({
-  onDeleteTask,
-  onToggleTask,
-  sortBy,
-  setSortBy,
-}: TaskListProps) {
+function TaskList({ onDeleteTask, sortBy, setSortBy }: TaskListProps) {
   const dispatch = useAppDispatch();
   const { tasks, status, error } = useAppSelector((state) => state.tasks);
 
@@ -45,13 +40,20 @@ function TaskList({
   }
 
   let sortedTasks = [...tasks];
+  if (sortBy === "completed") {
+    sortedTasks.sort((a, b) => Number(b.completed) - Number(a.completed));
+  }
 
-  if (sortBy === "pending") sortedTasks = tasks;
+  //   if (sortBy === "pending") sortedTasks = tasks;
 
-  if (sortBy === "completed")
-    sortedTasks = tasks
-      .slice()
-      .sort((a, b) => Number(b.completed) - Number(a.completed));
+  //   if (sortBy === "completed")
+  //     sortedTasks = tasks
+  //       .slice()
+  //       .sort((a, b) => Number(b.completed) - Number(a.completed));
+
+  const handleToggleTask = (id: string) => {
+    dispatch(toggleTaskAsync(id));
+  };
 
   return (
     <div
@@ -78,7 +80,7 @@ function TaskList({
           <SingleTask
             task={task}
             onDeleteTask={onDeleteTask}
-            onToggleTask={() => onToggleTask}
+            onToggleTask={handleToggleTask}
             key={task.id}
           />
         ))}

@@ -1,12 +1,8 @@
 import { Checkbox, IconButton } from "@mui/material";
-import { useAppDispatch } from "../hooks";
-import { toggleTaskAsync } from "../features/tasks/taskSlice";
 
 function SingleTask({ task, onDeleteTask, onToggleTask }: any) {
-  const dispatch = useAppDispatch();
-
-  const handleToggleTask = () => {
-    dispatch(toggleTaskAsync(task._id));
+  const handleToggle = () => {
+    onToggleTask(task._id);
   };
 
   return (
@@ -18,8 +14,8 @@ function SingleTask({ task, onDeleteTask, onToggleTask }: any) {
         fontSize: "18px",
       }}
     >
-      <Checkbox onChange={() => handleToggleTask} checked={task.status} />
-      <span style={task.status ? { textDecoration: "line-through" } : {}}>
+      <Checkbox onChange={() => handleToggle} checked={task.completed} />
+      <span style={task.completed ? { textDecoration: "line-through" } : {}}>
         {task.title}
         <IconButton size="small" onClick={() => onDeleteTask(task.id)}>
           ❌
