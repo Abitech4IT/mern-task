@@ -1,9 +1,36 @@
-import { Container, Grid, Typography } from "@mui/material";
-import TextInput from "./components/TextInput";
-import Button from "./components/Button";
-import SelectInput from "./components/SelectInput";
+import { Container } from "@mui/material";
+import { useState } from "react";
+import TaskForm from "./components/TaskForm";
+import TaskList from "./components/TaskList";
+import { ITask } from "./types";
+import { useAppDispatch } from "./hooks";
+import { toggleTaskAsync } from "./features/tasks/taskSlice";
 
 function App() {
+  const [tasks, setTasks] = useState<ITask[]>([]);
+  const [sortBy, setSortBy] = useState("");
+  const dispatch = useAppDispatch();
+
+  function handleAddTasks(task: ITask) {
+    setTasks((tasks) => [...tasks, task]);
+  }
+
+  function handleDeleteTask(id: string) {
+    setTasks((tasks) => tasks.filter((task) => task.id !== id));
+  }
+
+  function handleToggleTask(id: string) {
+    dispatch(toggleTaskAsync(id));
+  }
+
+  // function handleClearTaskList() {
+  //   const confirmed = window.confirm(
+  //     "Are you sure you want to delete all lists?"
+  //   );
+
+  //   if (confirmed) setTasks([]);
+  // }
+
   return (
     <Container
       sx={{
@@ -13,54 +40,18 @@ function App() {
         padding: 5,
       }}
     >
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={12} md={12} lg={12}>
-          <Typography variant="h3" align="center">
-            Task Management System
-          </Typography>
-        </Grid>
-
-        <Grid item xs={12} sm={4}>
-          <TextInput
-            title="Task Title"
-            name="task"
-            placeholder="Enter your task"
-            size="small"
-          />
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <Button type="submit" variant="contained" sx={{ marginTop: 4 }}>
-            Add Task
-          </Button>
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <SelectInput
-            size="small"
-            name="country"
-            value=""
-            title={
-              <Typography fontSize={16} fontWeight={600}>
-                Filter By
-              </Typography>
-            }
-            menuItems={[
-              { title: "Completed", value: "completed" },
-              { title: "Pending", value: "pending" },
-            ]}
-            sx={{
-              marginBottom: 3,
-              p: 0.5,
-              borderRadius: 1,
-              outline: "none",
-              border: "1px solid",
-              boxShadow: "none",
-              ".MuiOutlinedInput-notchedOutline": {
-                borderStyle: "none",
-              },
-            }}
-          />
-        </Grid>
-      </Grid>
+      <TaskForm
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        onAddTask={handleAddTasks}
+      />
+      <TaskList
+        tasks={tasks}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        onDeleteTask={handleDeleteTask}
+        onToggleTask={handleToggleTask}
+      />
     </Container>
   );
 }

@@ -30,7 +30,7 @@ export interface TextInputPros {
 const TextInput = (props: TextInputPros) => {
   return (
     <FormControl variant="outlined" fullWidth>
-      <Typography fontSize={14} fontWeight={500} mb={0.7}>
+      <Typography fontSize={16} fontWeight={600} mb={0.7}>
         {props.title}
       </Typography>
       <TextField
