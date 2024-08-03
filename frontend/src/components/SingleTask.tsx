@@ -18,8 +18,8 @@ function SingleTask({ task, onDeleteTask, onToggleTask }: any) {
         fontSize: "18px",
       }}
     >
-      <Checkbox onChange={() => handleToggleTask} checked={task.status} />
-      <span style={task.status ? { textDecoration: "line-through" } : {}}>
+      <Checkbox onChange={() => handleToggleTask} checked={task.completed} />
+      <span style={task.completed ? { textDecoration: "line-through" } : {}}>
         {task.title}
         <IconButton size="small" onClick={() => onDeleteTask(task.id)}>
           ❌
