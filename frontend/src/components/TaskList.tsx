@@ -8,17 +8,11 @@ import { toggleTaskAsync } from "../features/tasks/taskSlice";
 interface TaskListProps {
   tasks: Task[];
   onDeleteTask: (id: string) => void;
-  onToggleTask: (id: string) => void;
   sortBy: string;
   setSortBy: (sortBy: "pending" | "completed") => void;
 }
 
-function TaskList({
-  onDeleteTask,
-  onToggleTask,
-  sortBy,
-  setSortBy,
-}: TaskListProps) {
+function TaskList({ onDeleteTask, sortBy, setSortBy }: TaskListProps) {
   const dispatch = useAppDispatch();
   const { tasks, status, error } = useAppSelector((state) => state.tasks);
 

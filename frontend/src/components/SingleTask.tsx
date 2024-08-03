@@ -1,5 +1,4 @@
 import { Checkbox, IconButton } from "@mui/material";
-import { useAppDispatch } from "../hooks";
 
 function SingleTask({ task, onDeleteTask, onToggleTask }: any) {
   const handleToggle = () => {
